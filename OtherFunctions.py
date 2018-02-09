@@ -1,5 +1,12 @@
-from functions import *
-from utils import mnist_reader
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.model_selection import learning_curve
+from sklearn.model_selection import ShuffleSplit
+from sklearn import tree
+from sklearn.linear_model import Perceptron
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import classification_report
 from sklearn.model_selection import GridSearchCV
 from sklearn.tree import DecisionTreeClassifier
 import sys
@@ -18,10 +25,9 @@ def BestEstimatorCurve(estimator='', x_train, y_train, x_test, y_test, train_siz
         matrix=confusion_matrix(y_test, y_pred, labels=['T-shirt/top','Trouser','Pullover','Dress','Coat','Sandal',
                                                    'Shirt','Sneaker','Bag','Ankle boot])
         print "Miglior punteggio DecisionTree nel training: %.2f%%", 100*(grid_search.best_score_)
-        print '{}% Accuratezza predizione usando i migliori parametri per il DecisionTree : {}'.format(accuracy,grid_search.best_params_)
+        print '{}% Accuratezza predizione Decision Tree usando i parametri che restituiscono il miglior punteggio nel train : {}'.format(accuracy,grid_search.best_params_)
         print 'matrice : \n', matrix
         print 'Classification report: \n', classification_report(y_test, y_pred)       
-        return clf
     
      elif estimator=='perceptron':
         parameter_grid = {'max_iter': range(1,35)}
@@ -35,10 +41,9 @@ def BestEstimatorCurve(estimator='', x_train, y_train, x_test, y_test, train_siz
         matrix=confusion_matrix(y_test, y_pred, labels=['T-shirt/top','Trouser','Pullover','Dress','Coat','Sandal',
                                                    'Shirt','Sneaker','Bag','Ankle boot])
         print "Miglior punteggio Perceptron nel training: %.2f%%", 100*(grid_search.best_score_)
-        print '{}% Accuratezza predizione usando i migliori parametri per il Perceptron : {}'.format(accuracy,grid_search.best_params_)
+        print '{}% Accuratezza predizione del Perceptron usando i parametri che restituiscono il miglior punteggio nel train : {}'.format(accuracy,grid_search.best_params_)
         print 'matrice : \n', matrix
         print 'Classification report: \n', classification_report(y_test, y_pred)       
-        return clf
     
     else:
         sys.exit('error, estimator do not supported')
